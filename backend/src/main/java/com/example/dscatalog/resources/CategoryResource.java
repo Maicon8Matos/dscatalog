@@ -1,5 +1,6 @@
 package com.example.dscatalog.resources;
 
+import com.example.dscatalog.dtos.CategoryDto;
 import com.example.dscatalog.entities.Category;
 import com.example.dscatalog.services.CategoryService;
 
@@ -19,7 +20,7 @@ public class CategoryResource {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll(){
+    public ResponseEntity<List<CategoryDto>> findAll () {
         return ResponseEntity.ok().body(categoryService.findAll());
     }
 }

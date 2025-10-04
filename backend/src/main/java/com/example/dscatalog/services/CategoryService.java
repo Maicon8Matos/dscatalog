@@ -1,5 +1,6 @@
 package com.example.dscatalog.services;
 
+import com.example.dscatalog.dtos.CategoryDto;
 import com.example.dscatalog.entities.Category;
 import com.example.dscatalog.repositories.CategoryRepository;
 
@@ -16,8 +17,9 @@ public class CategoryService {
     private CategoryRepository categoryRepsitory;
 
     @Transactional(readOnly = true)
-    public List<Category> findAll () {
-        return categoryRepsitory.findAll();
+    public List<CategoryDto> findAll () {
+        List<Category> list = categoryRepsitory.findAll();
+        return list.stream().map(cat -> new CategoryDto(cat)).toList();
     }
 
 }
