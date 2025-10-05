@@ -5,6 +5,7 @@ import com.example.dscatalog.entities.Category;
 import com.example.dscatalog.repositories.CategoryRepository;
 import com.example.dscatalog.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +38,18 @@ public class CategoryService {
         category = categoryRepository.save(category);
         return new CategoryDto(category);
     }
+
+    @Transactional
+    public CategoryDto update (CategoryDto categoryDto, Long id) {
+        try {
+            Category category = categoryRepository.getReferenceById(id);
+            category.setName(categoryDto.getName());
+            category = categoryRepository.save(category);
+            return new CategoryDto(category);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Entity Not Found, Unable to UPDATE");
+        }
+    }
+    
 
 }
