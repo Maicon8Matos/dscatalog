@@ -1,5 +1,6 @@
 package com.example.dscatalog.resources.exceptions;
 
+import com.example.dscatalog.services.exceptions.DatabaseException;
 import com.example.dscatalog.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,10 +20,21 @@ public class ResourceExceptionHandler {
         StandardError error = new StandardError();
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());
-        error.setError("Resource Not Found");
+        error.setError("Resource not Found");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> database (DatabaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError error = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Database Exception");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
 }
