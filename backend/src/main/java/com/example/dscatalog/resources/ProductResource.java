@@ -5,8 +5,7 @@ import com.example.dscatalog.services.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,13 +20,8 @@ public class ProductResource {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> findAll (
-            @RequestParam (required = false, name = "page", defaultValue = "0") Integer page,
-            @RequestParam (required = false, name = "linesPerPage", defaultValue = "5") Integer linesPerPage,
-            @RequestParam (required = false, name = "direction", defaultValue = "ASC") String direction,
-            @RequestParam (required = false, name = "orderBy", defaultValue = "id") String orderBy) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return ResponseEntity.ok().body(productService.findAllPaged(pageRequest));
+    public ResponseEntity<Page<ProductDto>> findAll (Pageable pageable) {
+        return ResponseEntity.ok().body(productService.findAllPaged(pageable));
     }
 
     @GetMapping(value = "/{id}")
